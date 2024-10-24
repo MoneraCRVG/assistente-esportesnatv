@@ -28,12 +28,12 @@ def get_broadcasters_id(cursor, broadcasters_uuid):
             broadcasters_id.append(broadcaster_id)
     return broadcasters_id
 
-def insert_event(cursor, date, event_uuid, time, venue, status, tournament_stage, tournament_id, home_team_id, away_team_id):
+def insert_event(cursor, date, event_uuid, time, status, tournament_stage, tournament_id, home_team_id, away_team_id):
     sql_query = """
-        INSERT INTO football.events (date, event_uuid, time, venue, status, tournament_stage, tournaments_tournament_id, home_team_id, away_team_id)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO football.events (date, event_uuid, time, status, tournament_stage, tournaments_tournament_id, home_team_id, away_team_id)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
     """
-    cursor.execute(sql_query, (date, event_uuid, time, venue, status, tournament_stage, tournament_id, home_team_id, away_team_id))
+    cursor.execute(sql_query, (date, event_uuid, time, status, tournament_stage, tournament_id, home_team_id, away_team_id))
 
 def insert_event_broadcasters(cursor, event_id, broadcasters_id):
     sql_query = "INSERT INTO football.event_broadcasters (events_event_id, broadcasters_broadcaster_id) VALUES (%s, %s)"
@@ -49,7 +49,6 @@ def football_form(conn, cursor, date=None, tournament=None, team=None):
             date = input("Data: ")
 
         time = input("Horário: ")
-        venue = input("Estádio: ")
         status = 'upcoming'
         tournament_stage = input("Fase da competição: ")
         if not tournament:
@@ -66,7 +65,7 @@ def football_form(conn, cursor, date=None, tournament=None, team=None):
         event_uuid = f"{home_team_uuid}-x-{away_team_uuid}-{random.randint(0, 99999)}"
 
         try:
-            insert_event(cursor, date, event_uuid, time, venue, status, tournament_stage, tournament_id, home_team_id, away_team_id)
+            insert_event(cursor, date, event_uuid, time, status, tournament_stage, tournament_id, home_team_id, away_team_id)
             conn.commit()
 
             event_id = get_id_by_uuid(cursor, 'football.events', 'event_uuid', event_uuid, 'event_id')
@@ -76,7 +75,6 @@ def football_form(conn, cursor, date=None, tournament=None, team=None):
         except Exception as e:
             print(f"Error: {e}")
         
-        os.system("cls")
 
 def main():
     conn = mysql.connector.connect(host='esportesnatv.com.br', user='nvmonera', password='115E9077A6AC68584FF7096FE4E7498C')
