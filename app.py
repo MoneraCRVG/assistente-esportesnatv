@@ -5,7 +5,7 @@ def main(page: ft.Page):
     page.title = "Assistente EsportesNaTV"
     global broadcasters
     broadcasters = ft.Column()
-
+    broadcaster_list = []
     def acao_drawer(e):
         match drawer.selected_index + 1:
             case 1:
@@ -24,32 +24,37 @@ def main(page: ft.Page):
         controls=[
             ft.NavigationDrawerDestination(
                 label="Futebol",
-                icon=ft.icons.SPORTS_SOCCER,
+                icon=ft.Icons.SPORTS_SOCCER,
             ),
             ft.NavigationDrawerDestination(
                 label="Vôlei",
-                icon=ft.icons.SPORTS_VOLLEYBALL
+                icon=ft.Icons.SPORTS_VOLLEYBALL
             ),
             ft.NavigationDrawerDestination(
                 label="Usuários",
-                icon=ft.icons.PERSON
+                icon=ft.Icons.PERSON
             ),
             ft.NavigationDrawerDestination(
                 label="Configurações",
-                icon=ft.icons.SETTINGS
+                icon=ft.Icons.SETTINGS
             ),
             ft.NavigationDrawerDestination(
                 label="Registros",
-                icon=ft.icons.LOCK_CLOCK
+                icon=ft.Icons.LOCK_CLOCK
             )
         ]
     )
-    burger = ft.IconButton(icon=ft.icons.MENU, on_click=lambda e: page.open(drawer))
+    burger = ft.IconButton(icon=ft.Icons.MENU, on_click=lambda e: page.open(drawer))
     appbar = ft.AppBar(leading=burger, title=ft.Text("Assistente EsportesNaTV"))
 
     def submit(e):
+        for broadcaster in broadcasters.controls:
+            broadcaster_name = broadcaster.controls[0].value
+            broadcaster_list.append(broadcaster_name)
+
+        broadcaster_names = ", ".join(broadcaster_list)
         print(
-            f'Data: {date_field.value}\nCompetição:{tournament_field.value}\nHorário:{time_field.value}\n{home_team_field.value} x {away_team_field.value}\nEmissoras{broadcaster_list}')
+            f'Data: {date_field.value}\nCompetição:\t{tournament_field.value}\nHorário:\t{time_field.value}\n{home_team_field.value} x {away_team_field.value}\nEmissoras:\t{broadcaster_names}')
         if form_modes.value != "date":
             date_field.value = ""  # Corrected to use assignment
         if form_modes.value != "tournament":
@@ -60,7 +65,7 @@ def main(page: ft.Page):
         if form_modes.value != "away_team":
             away_team_field.value = ""  # Corrected to use assignment
 
-        broadcaster_list.clear()
+        broadcasters.clean()
 
     date_field = ft.TextField(
         label="Data",
@@ -88,15 +93,15 @@ def main(page: ft.Page):
         label="UUID do time visitante",
     )
 
-    broadcaster_list = []
 
     def remove_broadcaster(e, broadcaster):
         broadcasters.controls.remove(broadcaster)
         page.update()
 
     def add_new_broadcaster(e):
+        broadcaster_name = ft.TextField(autofocus=True)
         new_broadcaster = ft.Row([
-            ft.TextField(autofocus=True),
+            broadcaster_name,
             ft.ElevatedButton("Remover", on_click=lambda e: remove_broadcaster(e, new_broadcaster))
         ])
         broadcasters.controls.append(new_broadcaster)
@@ -185,7 +190,7 @@ def main(page: ft.Page):
                                         ft.Text("DBO")
                                     ]
                                 )
-                            ]),
+                            ],expand=True),
                             ft.Column([
                                 ft.Text("Servidor", style=ft.TextDecoration.UNDERLINE),
                                 ft.ListView(
@@ -195,7 +200,7 @@ def main(page: ft.Page):
                                         ft.Text("Gerente")
                                     ]
                                 )
-                            ])
+                            ],expand=True)
 
                         ],
                         expand=True)
@@ -227,7 +232,7 @@ def main(page: ft.Page):
                         ft.AppBar(title=ft.Text("Registros")),
                         ft.Row([
                             ft.Column([
-                                ft.Text("Logs do servidor"),
+                                ft.Text("Logs do servidor", size=24),
                                 ft.ListView([
                                     ft.Text("00:03 Servidor rust iniciado"),
                                     ft.Text("00:02 Servidor next.js iniciado"),
@@ -235,7 +240,7 @@ def main(page: ft.Page):
                                 ])
                             ], expand=True),  # Ensure this column can expand
                             ft.Column([
-                                ft.Text("Logs do banco de dados"),
+                                ft.Text("Logs do banco de dados", size=24),
                                 ft.ListView([
                                     ft.Text("00:03 SELECT...[nicolas]"),
                                     ft.Text("00:02 GRANT PRIVILEGES...[root]"),
@@ -243,8 +248,8 @@ def main(page: ft.Page):
                                 ])
                             ], expand=True),
                             ft.Column([
-                                ft.Text(f"Usuários conectados simultaneamente: {random.randint(0,3000)}"),
-                                ft.Text("Problemas reportados pelos usuários:"),
+                                ft.Text(f"Usuários conectados simultaneamente: {random.randint(0,3000)}", size=24),
+                                ft.Text("Problemas reportados pelos usuários:", size=24),
                                 ft.ListView([
                                     ft.Text("Partida River Plate x Barcelona sem emissoras"),
                                     ft.Text("Não encontra o jogo do flamengo"),
