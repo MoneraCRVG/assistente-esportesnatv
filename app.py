@@ -24,27 +24,27 @@ def main(page: ft.Page):
         controls=[
             ft.NavigationDrawerDestination(
                 label="Futebol",
-                icon=ft.Icons.SPORTS_SOCCER,
+                icon=ft.icons.SPORTS_SOCCER,
             ),
             ft.NavigationDrawerDestination(
                 label="Vôlei",
-                icon=ft.Icons.SPORTS_VOLLEYBALL
+                icon=ft.icons.SPORTS_VOLLEYBALL
             ),
             ft.NavigationDrawerDestination(
                 label="Usuários",
-                icon=ft.Icons.PERSON
+                icon=ft.icons.PERSON
             ),
             ft.NavigationDrawerDestination(
                 label="Configurações",
-                icon=ft.Icons.SETTINGS
+                icon=ft.icons.SETTINGS
             ),
             ft.NavigationDrawerDestination(
                 label="Registros",
-                icon=ft.Icons.LOCK_CLOCK
+                icon=ft.icons.LOCK_CLOCK
             )
         ]
     )
-    burger = ft.IconButton(icon=ft.Icons.MENU, on_click=lambda e: page.open(drawer))
+    burger = ft.IconButton(icon=ft.icons.MENU, on_click=lambda e: page.open(drawer))
     appbar = ft.AppBar(leading=burger, title=ft.Text("Assistente EsportesNaTV"))
 
     def submit(e):
