@@ -152,6 +152,7 @@ def main(page: ft.Page):
                     ],
                     appbar=appbar,
                     drawer=drawer,
+                    scroll=ft.ScrollMode.AUTO
                 )
             )
         if page.route == "/volleyball":
@@ -173,6 +174,8 @@ def main(page: ft.Page):
                     ],
                     appbar=appbar,
                     drawer=drawer,
+                    scroll=ft.ScrollMode.AUTO
+
                 )
             )
         if page.route == "/users":
@@ -206,7 +209,9 @@ def main(page: ft.Page):
                         expand=True)
                     ],
                     appbar=appbar,
-                    drawer=drawer
+                    drawer=drawer,
+                    scroll=ft.ScrollMode.AUTO
+
                 )
             )
         if page.route == "/config":
@@ -222,6 +227,8 @@ def main(page: ft.Page):
                     ],
                     appbar=appbar,
                     drawer=drawer,
+                    scroll=ft.ScrollMode.AUTO
+
                 )
             )
         if page.route == "/logs":
